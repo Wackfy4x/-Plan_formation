@@ -1,0 +1,27 @@
+info:
+  name: register
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/auth/register"
+  body:
+    type: json
+    data: |-
+      {
+        "matricule": "2122i036",
+        "nom": "waffeu",
+        "prenom": "wilfried",
+        "email": "wilfriedc601@gmail.com",
+        "motDePasse": "demo1234",
+        "serviceId": 1
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

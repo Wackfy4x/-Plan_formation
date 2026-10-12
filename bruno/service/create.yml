@@ -1,0 +1,18 @@
+info:
+  name: create
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/service/administratifs"
+  auth:
+    type: bearer
+    token: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyMTIyaTAzNiIsImV4cCI6MTc5MTgxNTk5NCwiaWF0IjoxNzkxODE1OTM0LCJqdGkiOiJkOWNmN2MxOS1jNDE1LTQwZmYtYTA5MC1mYjc4ZDgwNzY5MjEiLCJyb2xlcyI6WyJudWxsIl19.8UJMnKps_HF-h9PGjR4m0NGKvRfcDHF4-lr_NYGL8Ng
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false
