@@ -36,6 +36,11 @@ public class AuthController {
         return authService.login(req);
     }
 
+    @PostMapping("/refresh")
+    public AuthResponseDto refresh(@Valid @RequestBody RefreshTokenDto dto) {
+        return authService.refresh(dto);
+    }
+
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void logout(@AuthenticationPrincipal Jwt jwt, @RequestBody(required = false) RefreshTokenDto dto) {

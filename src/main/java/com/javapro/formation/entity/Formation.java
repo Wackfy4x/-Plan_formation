@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.Instant;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -24,6 +25,9 @@ public class Formation {
     private String description;
 
     private Integer nbPlaces;
+
+    /** Date de la formation, renseignée seulement lorsqu'elle est connue. */
+    private LocalDate dateFormation;
 
     private boolean estValidee;
 

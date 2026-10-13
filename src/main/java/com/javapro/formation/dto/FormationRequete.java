@@ -1,18 +1,19 @@
 package com.javapro.formation.dto;
 
-import com.javapro.formation.entity.Campagne;
-import com.javapro.formation.entity.Utilisateur;
-import org.mapstruct.Mapper;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 
-import java.time.Instant;
+import java.time.LocalDate;
+import java.util.Set;
 
 public record FormationRequete(
-        Campagne campagne,
-        String intitule,
+        @NotNull Long campagneId,
+        @NotBlank @Size(max = 200) String intitule,
         String description,
-        Integer nbPlaces,
-        Boolean estValidee,
-        Instant dateValidation,
-        Utilisateur validePar
+        @NotNull @Positive Integer nbPlaces,
+        LocalDate dateFormation,
+        Set<Long> servicesPrioritairesIds
 ) {
 }

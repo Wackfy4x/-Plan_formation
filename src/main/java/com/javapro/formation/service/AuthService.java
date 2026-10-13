@@ -39,6 +39,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final TokenStore tokenStore;
+    private final TokenDenylist denylist;
 
     @Transactional
     public UtilisateurResponse register(RegisterRequest req) {
@@ -73,11 +74,25 @@ public class AuthService {
         return jwtService.buildAuthResponse(auth.getName(), auth.getAuthorities());
     }
 
+    /** Échange un refresh token (à usage unique) contre une nouvelle paire de jetons. */
+    public AuthResponseDto refresh(RefreshTokenDto dto) {
+        var data = tokenStore.consumeRefreshToken(dto.refreshToken());
+        if (data == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Refresh token invalide ou expiré");
+        }
+        Utilisateur u = utilisateurs.findByMatricule(data.username())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Utilisateur inconnu"));
+        return jwtService.buildAuthResponse(u.getUsername(), u.getAuthorities());
+    }
+
     public void logout(Jwt accessToken, RefreshTokenDto dto) {
-        tokenStore.revokeAccessToken(accessToken.getId(), accessToken.getExpiresAt());
+        // Le décodeur JWT consulte TokenDenylist : c'est elle qui rend le jeton inutilisable.
+        if (accessToken != null) {   // /auth/logout est public : le jeton peut être absent ou expiré
+            denylist.revoquer(accessToken.getId(), accessToken.getExpiresAt());
+        }
         if (dto != null && dto.refreshToken() != null) {
             var data = tokenStore.consumeRefreshToken(dto.refreshToken());
-            if (data != null && !data.username().equals(accessToken.getSubject())) {
+            if (data != null && accessToken != null && !data.username().equals(accessToken.getSubject())) {
                 // Le refresh token appartient à un autre utilisateur : on le remet en place.
                 tokenStore.saveRefreshToken(dto.refreshToken(), data.username(), data.expiresAt());
             }
@@ -86,7 +101,7 @@ public class AuthService {
 
     @Transactional(readOnly = true)
     public UtilisateurResponse me(Jwt jwt) {
-        return utilisateurs.findById(Long.valueOf(jwt.getSubject()))
+        return utilisateurs.findByMatricule(jwt.getSubject())   // le subject du jeton est le matricule
                 .map(UtilisateurResponse::from)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.UNAUTHORIZED));
     }

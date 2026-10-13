@@ -10,10 +10,12 @@ http:
     type: json
     data: |-
       {
-        "campagne": {"id": 1},
+        "campagneId": 1,
         "intitule": "developpement frontend",
         "description": "cour de developpement frontend avec javascript, node js, vue js",
-        "nbPlaces": 10
+        "nbPlaces": 10,
+        "dateFormation": "2027-03-10",
+        "servicesPrioritairesIds": [1]
       }
   auth: inherit
 
