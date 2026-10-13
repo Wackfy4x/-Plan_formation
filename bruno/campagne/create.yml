@@ -1,0 +1,26 @@
+info:
+  name: create
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/campagne"
+  body:
+    type: json
+    data: |-
+      {
+        "annee": 2026,
+        "dateEtablissement": "2025-09-15",
+        "dateOuverture": "2025-10-01",
+        "dateCloture": "2025-11-30",
+        "datePublication": "2025-12-31"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

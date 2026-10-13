@@ -13,7 +13,25 @@ http:
         "email": "wilfriedc601@gmail.com",
         "motDePasse": "demo1234"
       }
-  auth: inherit
+
+runtime:
+  actions:
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.accessToken
+        method: jsonq
+      variable:
+        name: accessToken
+        scope: runtime
+    - type: set-variable
+      phase: after-response
+      selector:
+        expression: res.body.refreshToken
+        method: jsonq
+      variable:
+        name: refreshToken
+        scope: runtime
 
 settings:
   encodeUrl: true

@@ -25,9 +25,6 @@ public class JwtService {
     private final JwtProperties props;
     private final TokenStore tokenStore;
 
-    @Value("${jwt.expiration:3600}")
-    private long jwtExpiration;
-
     @Value("${jwt.refresh.expiration:864000}")
     private long refreshExpiration;
 
@@ -53,7 +50,7 @@ public class JwtService {
 
     public AuthResponseDto buildAuthResponse(String username, Collection<? extends GrantedAuthority> authorities) {
         var now = Instant.now();
-        var accessExpireAt = now.plusSeconds(jwtExpiration);
+        var accessExpireAt = now.plusSeconds(dureeEnSecondes());
         var accessToken = createAccessToken(username, authorities, now, accessExpireAt);
         var refreshExpireAt = now.plusSeconds(refreshExpiration);
         var refreshToken = UUID.randomUUID().toString();

@@ -1,0 +1,25 @@
+info:
+  name: create
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/formation"
+  body:
+    type: json
+    data: |-
+      {
+        "campagne": {"id": 1},
+        "intitule": "developpement frontend",
+        "description": "cour de developpement frontend avec javascript, node js, vue js",
+        "nbPlaces": 10
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+  forwardAuthorizationHeader: false

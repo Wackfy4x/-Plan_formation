@@ -17,7 +17,6 @@ http:
         "motDePasse": "demo1234",
         "serviceId": 1
       }
-  auth: inherit
 
 settings:
   encodeUrl: true
